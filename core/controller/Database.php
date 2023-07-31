@@ -6,7 +6,7 @@ class Database
     public static $con;
 
     public static $DB_host = "localhost";
-    public static $DB_name = "dbtienda";
+    public static $DB_name = "dbsuper";
 
     function Database()
     {
@@ -14,7 +14,7 @@ class Database
         $this->pass = "";
         $this->puerto = "3306";
         $this->host = "localhost";
-        $this->ddbb = "dbtienda";
+        $this->ddbb = "dbsuper";
     }
 
     function connect()
