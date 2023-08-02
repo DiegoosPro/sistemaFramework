@@ -1,3 +1,4 @@
+<h1>PAGINA PRODUCTOS</h1>
 <?php
 
 $datos = ProductoData::getAllProductos();
@@ -20,7 +21,7 @@ if (isset($_POST['btnGrabar'])) {
   $imgFile = $_FILES['imguser']['name'];
   $tmp_dir = $_FILES['imguser']['tmp_name'];
   $imgSize = $_FILES['imguser']['size'];
-  $upload_dir = '../imagenes/';
+  $upload_dir = 'imagenes/';
 
   if (empty($imgFile)) {
     $pro_imagen = "sinimagen.jpeg";
@@ -88,7 +89,7 @@ if (isset($_POST['btnUpdate'])) {
   $imgFile = $_FILES['imguser']['name'];
   $tmp_dir = $_FILES['imguser']['tmp_name'];
   $imgSize = $_FILES['imguser']['size'];
-  $upload_dir = '../imagenes/';
+  $upload_dir = 'imagenes/';
 
 
   if ($imgFile) {
@@ -128,6 +129,7 @@ if (isset($_POST['btnUpdate'])) {
     $catego_id
   ) == true) {
     echo "DATOS DEL PRODUCTO ACTUALIZADO CORRECTAMENTE";
+    
   } else {
     echo "**** NOOO SE PUEDO GRABAR, REVISE LOS DATOS O EL CODIGO ****";
   }
@@ -142,7 +144,7 @@ if (isset($_POST['btnUpdate'])) {
 <h3>ESTOY EN EL CRUD VERSION 2</h3>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalNuevo">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalNuevo">
   Nuevo producto
 </button>
 
@@ -199,7 +201,7 @@ if (isset($_POST['btnUpdate'])) {
               ?>
           </td>
           <td>
-            <img src="../imagenes/<?php echo $row['pro_imagen']; ?>" width="60" height="60">
+            <img src="imagenes/<?php echo $row['pro_imagen']; ?>" width="60" height="60">
           </td>
           <td>
             <a href="#" class="btn btn-sm btn-info">Ver</a>
@@ -313,7 +315,7 @@ if (isset($_POST['btnUpdate'])) {
             ?>
             <label>Marca :</label>
             <select class="form-select" name="cboMarcas" required>
-              <option value="<?php echo $datosPro['marca_id']; ?>"><?php echo  MarcaData::getNombeMarcaById($datosPro['marca_id']); ?></option>
+              <option value="<?php echo $datosPro['marca_id']; ?>"><?php echo MarcaData::getNombeMarcaById($datosPro['marca_id']); ?></option>
               <?php
               if ($marcas != null) {
                 foreach ($marcas as $indice => $rowm) {
@@ -365,16 +367,18 @@ if (isset($_POST['btnUpdate'])) {
     ?>
   </tbody>
 </table>
-<!-- Modal -->
-<div class="modal fade" id="ModalNuevo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar nuevo Producto</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form method="post" enctype="multipart/form-data">
+<!-- NUEVO MODAL DE ADMINLTE -->
+<div class="modal fade" id="ModalNuevo">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Default Modal</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <form method="post" enctype="multipart/form-data">
           <div class="row">
             <div class="col-6">
               <div class="card card-primary">
@@ -453,7 +457,7 @@ if (isset($_POST['btnUpdate'])) {
                   </div>
                   <!-- fin imagen -->
                   <?php
-                  $marcas = getAllMarcas();
+                  $marcas = MarcaData::getAllMarcas();
                   ?>
                   <label>Marca :</label>
                   <select class="form-select" name="cboMarcas" required>
@@ -492,10 +496,18 @@ if (isset($_POST['btnUpdate'])) {
             </div>
           </div>
         </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
       </div>
-    </div>
-  </div>
-</div>
+
+
 <!-- Fin Modal Nuevo -->
 <script>
   function previewFoto() {
@@ -509,4 +521,6 @@ if (isset($_POST['btnUpdate'])) {
     }
   }
 </script>
+
+
 

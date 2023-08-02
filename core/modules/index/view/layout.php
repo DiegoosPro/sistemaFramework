@@ -205,19 +205,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                
+
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Ventas</p>
+                    <p> Ventas</p>
                   </a>
                 </li>
                 <li class="nav-item">
                   <a href="#" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
-                    <p>Compras</p>
+                    <p> Facturacion</p>
                   </a>
-                </li>
+                </li>                
               </ul>
             </li>
 
@@ -225,13 +225,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <a href="#" class="nav-link active">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
-                  Proceso
+                  Procesos
                   <i class="right fas fa-angle-left"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="./?view=productos" class="nav-link ">
+                  <a href="./?view=productos" class="nav-link">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Productos</p>
                   </a>
@@ -243,10 +243,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </a>
                 </li>
               </ul>
-            </li>
-
-
-
+            </li>            
             <li class="nav-item">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>

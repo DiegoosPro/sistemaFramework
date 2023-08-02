@@ -10,7 +10,7 @@ class Module {
 	public static $view;
 	public static $message;
 
-	public static  function setModule($module){
+	public  function setModule($module){
 		self::$module = $module;
 	}
 
