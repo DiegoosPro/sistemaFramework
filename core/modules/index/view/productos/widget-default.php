@@ -135,7 +135,10 @@ if (isset($_POST['btnUpdate'])) {
   }
 }
 
-
+if (isset($_POST['btnDelete'])) {
+  $pro_id = $_POST['txtProId'];
+  ProductoData::deleteProducto($pro_id);
+}
 
 ?>
 
@@ -207,18 +210,20 @@ if (isset($_POST['btnUpdate'])) {
             <a href="#" class="btn btn-sm btn-info">Ver</a>
               <!-- Modal Editar -->
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ModalEditar<?php echo $row['pro_id']; ?>">
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalEditar<?php echo $row['pro_id']; ?>">
   Editar
 </button>
 
-<!-- Modal -->
+<!-- Modal editar -->
 <div class="modal fade" id="Modaleditar<?php echo $row['pro_id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Actualización de datos</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
+    <div class="modal-header">
+              <h4 class="modal-title">Actualizacion de datos</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
       <div class="modal-body">
         <?php 
         $datosPro = ProductoData::getProductoById($row['pro_id']);
@@ -358,7 +363,27 @@ if (isset($_POST['btnUpdate'])) {
   </div>
 </div>
             <!-- Fin Modal Editar -->
-            <a href="proeliminar.php?pro_id=<?php echo $row['pro_id']; ?>" class="btn btn-sm btn-danger">Eliminar</a>
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalEliminar<?php echo $row['pro_id']; ?>">
+  Eliminar
+</button>
+          <!-- Modal eliminar -->
+<div class="modal fade" id="ModalEliminar<?php echo $row['pro_id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+    <div class="modal-header">
+              <h4 class="modal-title">Eliminar de datos</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+             
+            </div>
+      <div class="modal-body">
+      <form method="post"> 
+        <h1>estas seguro</h1>
+        
+        <input type="hidden" name="txtProId" value="<?php echo $row['pro_id']; ?>">
+        <button type="submit"  name="btnDelete"  class="btn btn-danger btn-sm mt-2">eliminar</button>
+        </form>
           </td>
         </tr>
     <?php
@@ -449,7 +474,7 @@ if (isset($_POST['btnUpdate'])) {
                   <!-- imagen -->
                   <div class="input-group">
                     <p>
-                      <img src="../imagenes/sinimagen.jpeg" id="imguserId" class="img-circle" height="150" width="150" />
+                      <img src="imagenes/sinimagen.jpeg" id="imguserId" class="img-circle" height="150" width="150" />
                       <input class="input-group" type="file" name="imguser" id="fotoId" onchange="previewFoto()" accept="image/*">
                       <label for="ejemplo_archivo_1">Imagen (Tam. máximo archivo
                         1 MB)</label>

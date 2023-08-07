@@ -11,7 +11,7 @@ class Database
     function Database()
     {
         $this->user = "root";
-        $this->pass = "root";
+        $this->pass = "";
         $this->puerto = "3306";
         $this->host = "localhost";
         $this->ddbb = "dbsuper";
