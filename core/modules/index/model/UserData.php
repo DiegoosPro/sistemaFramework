@@ -10,30 +10,31 @@ class UserData
         $this->db = $DB_con;
     }
 
-    public static function getLogin($cedula, $upass)
+    public static function getLogin($usuario, $contra)
     {
         try {
-            $sql = "SELECT * FROM sisga_personas p, sisga_usuarios u 
-                       WHERE p.cedula=u.persona_cedula
-                       AND u.usuario=:pcedula LIMIT 1";
+            $sql = "SELECT * FROM usuarios u, perfiles p
+                       WHERE p.per_id =u.per_id
+                       AND u.userusuario=:pusuario";
             $conexion = Database::getCon();
             $stmt = $conexion->prepare($sql);
-            $stmt->bindparam(":pcedula", $cedula);
+            $stmt->bindparam(":pusuario", $usuario);
+
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
                 $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-                if (MD5($upass) == $userRow['upassword']) {
-                    if ($userRow['activo'] == 1) {
+                if (MD5($usuario) == $userRow['user_contra']) {
+                    if ($userRow['user_activo'] == 1) {
                         if (!isset($_SESSION)) {
                             session_destroy();
                             session_start();
                         }
 
 
-                        $_SESSION['sisgauser_cedula'] = $userRow['persona_cedula']; // ESTE ES RP ***OJO **** persona cedula
-                        $_SESSION['sisgauser_error'] = null;
-                        $_SESSION['sisgalast_time'] = time();
+                        $_SESSION['user_nombre'] = $userRow['user_nombre']; // ESTE ES RP ***OJO **** persona cedula
+                        $_SESSION['user_error'] = null;
+                        $_SESSION['last_time'] = time();
 
                         //******************* AUXILIARES ************************************
 
@@ -41,15 +42,15 @@ class UserData
 
                         return true;
                     } else {
-                        $_SESSION['sisgauser_error'] = "Estimado usuario, usted NO tiene autorización para utilizar el sistema, consulte al Administrador";
+                        $_SESSION['user_error'] = "Estimado usuario, usted NO tiene autorización para utilizar el sistema, consulte al Administrador";
                         return false;
                     }
                 } else {
-                    $_SESSION['sisgauser_error'] = "Usuario y/o Contraseña incorrectas..!!!";
+                    $_SESSION['user_error'] = "Usuario y/o Contraseña incorrectas..!!!";
                     return false;
                 }
             } else {
-                $_SESSION['sisgauser_error'] = "Usuario y/o Contraseña incorrectas, intente de nuevo..!!!";
+                $_SESSION['user_error'] = "Usuario y/o Contraseña incorrectas, intente de nuevo..!!!";
                 return false;
             }
         } catch (PDOException $e) {

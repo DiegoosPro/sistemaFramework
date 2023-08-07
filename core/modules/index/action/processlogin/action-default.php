@@ -1,10 +1,10 @@
 <?php
 if (!session_id()) session_start();
-if (isset($_POST['btn-login'])) {
-    $ucedula = $_POST['txtCedula'];
-    $upass = $_POST['txtPassword'];
+if (isset($_POST['btnIngresar'])) {
+    $usuario = $_POST['txtUsuario'];
+    $contra = $_POST['txtContra'];
 
-    if (UserData::getLogin($ucedula, $upass)) {
+    if (UserData::getLogin($usuario, $contra)) {
         print "<script>window.location='./'</script>";
 
     } else {

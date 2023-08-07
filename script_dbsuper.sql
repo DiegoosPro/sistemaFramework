@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v11.11 (64 bit)
-MySQL - 5.5.5-10.4.22-MariaDB : Database - dbsuper
+MySQL - 5.5.5-10.4.24-MariaDB : Database - dbsuper
 *********************************************************************
 */
 
@@ -9,11 +9,26 @@ MySQL - 5.5.5-10.4.22-MariaDB : Database - dbsuper
 /*!40101 SET SQL_MODE=''*/;
 
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 CREATE DATABASE /*!32312 IF NOT EXISTS*/`dbsuper` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci */;
 
 USE `dbsuper`;
+
+/*Table structure for table `perfiles` */
+
+DROP TABLE IF EXISTS `perfiles`;
+
+CREATE TABLE `perfiles` (
+  `per_id` int(11) NOT NULL AUTO_INCREMENT,
+  `per_nombre` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`per_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+/*Data for the table `perfiles` */
+
+insert  into `perfiles`(`per_id`,`per_nombre`) values (1,'Administrador'),(2,'Vendedor'),(3,'Gerente');
 
 /*Table structure for table `tab_categorias` */
 
@@ -69,8 +84,30 @@ CREATE TABLE `tab_productos` (
 
 /*Data for the table `tab_productos` */
 
-insert  into `tab_productos`(`pro_id`,`pro_descripcion`,`pro_precio_c`,`pro_precio_v`,`pro_stock`,`pro_fecha_elab`,`pro_nivel_azucar`,`pro_aplica_iva`,`pro_especifica`,`pro_imagen`,`marca_id`,`catego_id`) values (1,'Lavadora LG',599.99,799.99,5,'2023-06-01',NULL,1,'Capacidad de 10 kg, 1200 RPM','lavadora.jpeg',4,1),(2,'Leche Alpura',2.99,4.99,20,'2023-06-02',NULL,1,'Leche entera, 1 litro','leche.jpeg',3,2),(3,'iPhone 13 Pro',1099.00,1299.99,8,'2023-06-03',NULL,1,'Pantalla Super Retina XDR de 6.1\", 128GB Almacenamiento','iphone.jpeg',2,3),(4,'Crema Facial Nivea',9.99,14.99,15,'2023-06-04',NULL,1,'Hidratante, 50 ml','nivea.jpeg',5,4),(5,'Sartén antiadherente',19.99,29.99,12,'2023-06-05',NULL,1,'Diámetro de 26 cm, mango ergonómico','sarten.jpeg',1,5);
+insert  into `tab_productos`(`pro_id`,`pro_descripcion`,`pro_precio_c`,`pro_precio_v`,`pro_stock`,`pro_fecha_elab`,`pro_nivel_azucar`,`pro_aplica_iva`,`pro_especifica`,`pro_imagen`,`marca_id`,`catego_id`) values (1,'Lavadora LG',599.99,799.99,5,'2023-06-01',NULL,1,'Capacidad de 10 kg, 1200 RPM','lavadora.jpeg',4,1),(3,'iPhone 13 Pro',1099.00,1299.99,8,'2023-06-03',NULL,1,'Pantalla Super Retina XDR de 6.1\", 128GB Almacenamiento','iphone.jpeg',2,3),(4,'Crema Facial Nivea',9.99,14.99,15,'2023-06-04',NULL,1,'Hidratante, 50 ml','nivea.jpeg',5,4);
+
+/*Table structure for table `usuarios` */
+
+DROP TABLE IF EXISTS `usuarios`;
+
+CREATE TABLE `usuarios` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_usuario` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `user_contra` varchar(15) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `user_nombre` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `user_activo` tinyint(1) DEFAULT 1,
+  `user_create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `per_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  KEY `perfil_id` (`per_id`),
+  CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`per_id`) REFERENCES `perfiles` (`per_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+/*Data for the table `usuarios` */
+
+insert  into `usuarios`(`user_id`,`user_usuario`,`user_contra`,`user_nombre`,`user_activo`,`user_create_at`,`per_id`) values (1,'admin','admin','Diego Alexander',1,'2023-08-07 17:23:55',1),(2,'pepe','123','Pepito',1,'2023-08-07 17:24:24',2),(3,'anita','444','Anita ',1,'2023-08-07 17:25:11',3);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
