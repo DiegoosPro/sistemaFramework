@@ -1,6 +1,6 @@
 <?php
-//UserData::verificaSession();
-//if (!session_id()) session_start();
+UserData::verificaSession();
+if (!session_id()) session_start();
 
 //****************************** INDEX ******************************
 

@@ -6,7 +6,7 @@
     </div>
     <div class="card-body">
 
-      <form action="../../index3.html" method="post">
+      <form action="./?action=processlogin" method="post">
         <div class="input-group mb-3">
             <label for="">Usuario:</label>
           <input type="text" class="form-control" name="txtUsuario" placeholder="usuario">

@@ -285,14 +285,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="container-fluid">
           <?php
 
-          View::load("login");
-/*
-          if (isset($_SESSION['user_cedula']) && $_SESSION['auser_cedula'] != "") {
+
+          if (isset($_SESSION['user_id']) && $_SESSION['user_id'] != null) {
             View::load("index");
           } else {
             View::load("login");
           }
-          */
+          
           ?>
           <!-- /.row -->
         </div><!-- /.container-fluid -->

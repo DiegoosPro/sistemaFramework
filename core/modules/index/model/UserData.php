@@ -31,6 +31,7 @@ class UserData
                             session_start();
                         }
 
+                        $_SESSION['user_id'] = $userRow['user_id']; // ESTE ES RP ***OJO **** persona cedula
 
                         $_SESSION['user_nombre'] = $userRow['user_nombre']; // ESTE ES RP ***OJO **** persona cedula
                         $_SESSION['user_error'] = null;
@@ -62,8 +63,8 @@ class UserData
     public static function verificaSession()
     {
         if (!session_id()) session_start();
-        if (isset($_SESSION['sisgauser_id']) && $_SESSION['sisgauser_cedula'] != null) {
-            if ((time() - $_SESSION['sisgalast_time']) < 5400)
+        if (isset($_SESSION['user_id']) && $_SESSION['user_nombre'] != null) {
+            if ((time() - $_SESSION['last_time']) < 300)
                 $_SESSION['sisgalast_time'] = time();
             else
                 Core::redir("./?view=logout");
