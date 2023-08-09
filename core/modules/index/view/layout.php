@@ -148,6 +148,44 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
           </div>
         </li>
+        <li class="nav-item dropdown user-menu">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+          <img src="../../dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
+          <span class="d-none d-md-inline">Alexander Pierce</span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <!-- User image -->
+          <li class="user-header bg-primary">
+            <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+
+            <p>
+              Alexander Pierce - Web Developer
+              <small>Member since Nov. 2012</small>
+            </p>
+          </li>
+          <!-- Menu Body -->
+          <li class="user-body">
+            <div class="row">
+              <div class="col-4 text-center">
+                <a href="#">Followers</a>
+              </div>
+              <div class="col-4 text-center">
+                <a href="#">Sales</a>
+              </div>
+              <div class="col-4 text-center">
+                <a href="#">Friends</a>
+              </div>
+            </div>
+            <!-- /.row -->
+          </li>
+          <!-- Menu Footer-->
+          <li class="user-footer">
+            <a href="#" class="btn btn-default btn-flat">Profile</a>
+            <a href="#" class="btn btn-default btn-flat float-right">Sign out</a>
+          </li>
+        </ul>
+      </li>
+
         <li class="nav-item">
           <a class="nav-link" data-widget="fullscreen" href="#" role="button">
             <i class="fas fa-expand-arrows-alt"></i>
@@ -175,7 +213,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+            <img src="fotos/<?php if(isset($_SESSION['user_id'])&& $_SESSION['user_id'] != null) {echo $_SESSION['user_foto'];
+            } else{
+              echo 'user.png';
+            } 
+            ?>" class="img-circle elevation-2" alt="User Image">
           </div>
           <div class="info">
             <font color="Lime">
