@@ -15,6 +15,7 @@
     enable_page_level_ads: true
   });
 </script>
+
 <?php
 
 include "controller/Core.php";

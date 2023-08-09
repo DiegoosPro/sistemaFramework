@@ -3,37 +3,30 @@ date_default_timezone_set("America/Bogota");
 class UserData
 {
 
-    private $db;
-
-    function __construct($DB_con)
-    {
-        $this->db = $DB_con;
-    }
 
     public static function getLogin($usuario, $contra)
     {
         try {
-            $sql = "SELECT * FROM usuarios u, perfiles p
-                       WHERE p.per_id =u.per_id
-                       AND u.userusuario=:pusuario";
+            $sql = "SELECT * FROM usuarios u, perfiles p 
+                       WHERE p.per_id=u.per_id
+                       AND u.user_usuario=:pusuario";
             $conexion = Database::getCon();
             $stmt = $conexion->prepare($sql);
             $stmt->bindparam(":pusuario", $usuario);
-
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
                 $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-                if (MD5($usuario) == $userRow['user_contra']) {
+                if ($contra == $userRow['user_contra']) {
                     if ($userRow['user_activo'] == 1) {
                         if (!isset($_SESSION)) {
                             session_destroy();
                             session_start();
                         }
 
-                        $_SESSION['user_id'] = $userRow['user_id']; // ESTE ES RP ***OJO **** persona cedula
-
-                        $_SESSION['user_nombre'] = $userRow['user_nombre']; // ESTE ES RP ***OJO **** persona cedula
+                        $_SESSION['user_id'] = $userRow['user_id'];
+                        $_SESSION['user_nombre'] = $userRow['user_nombre']; 
+                        $_SESSION['user_perfil'] = $userRow['per_nombre']; 
                         $_SESSION['user_error'] = null;
                         $_SESSION['last_time'] = time();
 
@@ -65,7 +58,7 @@ class UserData
         if (!session_id()) session_start();
         if (isset($_SESSION['user_id']) && $_SESSION['user_nombre'] != null) {
             if ((time() - $_SESSION['last_time']) < 300)
-                $_SESSION['sisgalast_time'] = time();
+                $_SESSION['last_time'] = time();
             else
                 Core::redir("./?view=logout");
         } else {

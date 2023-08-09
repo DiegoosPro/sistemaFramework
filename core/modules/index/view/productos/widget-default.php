@@ -29,7 +29,7 @@ if (isset($_POST['btnGrabar'])) {
   } else {
     $imgExt = strtolower(pathinfo($imgFile, PATHINFO_EXTENSION));
     $valid_extensions = array('jpeg', 'jpg', 'gif');
-    
+
     $numero = rand(1000, 9999);
     $pro_imagen =  $numero . "." . $imgExt;
 
@@ -129,7 +129,6 @@ if (isset($_POST['btnUpdate'])) {
     $catego_id
   ) == true) {
     echo "DATOS DEL PRODUCTO ACTUALIZADO CORRECTAMENTE";
-    
   } else {
     echo "**** NOOO SE PUEDO GRABAR, REVISE LOS DATOS O EL CODIGO ****";
   }
@@ -143,8 +142,6 @@ if (isset($_POST['btnDelete'])) {
 ?>
 
 
-
-<h3>ESTOY EN EL CRUD VERSION 2</h3>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalNuevo">
@@ -208,182 +205,187 @@ if (isset($_POST['btnDelete'])) {
           </td>
           <td>
             <a href="#" class="btn btn-sm btn-info">Ver</a>
-              <!-- Modal Editar -->
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalEditar<?php echo $row['pro_id']; ?>">
-  Editar
-</button>
+            <!-- Modal Editar -->
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalEditar<?php echo $row['pro_id']; ?>">
+              Editar
+            </button>
 
-<!-- Modal editar -->
-<div class="modal fade" id="Modaleditar<?php echo $row['pro_id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    <div class="modal-header">
-              <h4 class="modal-title">Actualizacion de datos</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-      <div class="modal-body">
-        <?php 
-        $datosPro = ProductoData::getProductoById($row['pro_id']);
-        ?>
-      <form method="post" enctype="multipart/form-data">
-    <div class="row">
-      <div class="col-6">
-        <div class="card card-primary">
-          <div class="card-body">
-            <input type="hidden" name="txtFotoAnterior" value="<?php echo $datosPro['pro_imagen']; ?>">
-            <label>Codigo :</label>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" name="txtCodigo" id="txtCodigoId" value="<?php echo $datosPro['pro_id']; ?>" readonly class="form-control" placeholder="Codigo">
-            </div>
+            <!-- Modal  EDITAR-->
+            <div class="modal fade" id="ModalEditar<?php echo $row['pro_id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Actualizacion de datos</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <?php
+                    $datosPro = ProductoData::getProductoById($row['pro_id']);
+                    ?>
+                    <form method="post" enctype="multipart/form-data">
+                      <div class="row">
+                        <div class="col-6">
+                          <div class="card card-primary">
+                            <div class="card-body">
+                              <input type="hidden" name="txtFotoAnterior" value="<?php echo $datosPro['pro_imagen']; ?>">
+                              <label>Codigo :</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">@</span>
+                                <input type="text" name="txtCodigo" id="txtCodigoId" value="<?php echo $datosPro['pro_id']; ?>" readonly class="form-control" placeholder="Codigo">
+                              </div>
 
-            <label>Descripcion :</label>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" name="txtDesc" value="<?php echo $datosPro['pro_descripcion']; ?>" class="form-control" placeholder="Codigo">
-            </div>
+                              <label>Descripcion :</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">@</span>
+                                <input type="text" name="txtDesc" value="<?php echo $datosPro['pro_descripcion']; ?>" class="form-control" placeholder="Codigo">
+                              </div>
 
-            <label>Precio costo :</label>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">$</span>
-              <input type="number" name="txtPrecioC" value="<?php echo $datosPro['pro_precio_c']; ?>" class="form-control" maxlength="10">
-            </div>
+                              <label>Precio costo :</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">$</span>
+                                <input type="number" name="txtPrecioC" value="<?php echo $datosPro['pro_precio_c']; ?>" class="form-control" maxlength="10">
+                              </div>
 
-            <label>Precio venta :</label>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">$</span>
-              <input type="number" name="txtPrecioV" value="<?php echo $datosPro['pro_precio_v']; ?>" class="form-control">
-            </div>
+                              <label>Precio venta :</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">$</span>
+                                <input type="number" name="txtPrecioV" value="<?php echo $datosPro['pro_precio_v']; ?>" class="form-control">
+                              </div>
 
-            <label>Stock :</label>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">#</span>
-              <input type="number" name="txtStock" value="<?php echo $datosPro['pro_stock']; ?>" class="form-control">
-            </div>
+                              <label>Stock :</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">#</span>
+                                <input type="number" name="txtStock" value="<?php echo $datosPro['pro_stock']; ?>" class="form-control">
+                              </div>
 
-            <label>Fecha Elaboración :</label>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">#</span>
-              <input type="date" name="txtFechaElab" value="<?php echo $datosPro['pro_fecha_elab']; ?>" class="form-control">
-            </div>
+                              <label>Fecha Elaboración :</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">#</span>
+                                <input type="date" name="txtFechaElab" value="<?php echo $datosPro['pro_fecha_elab']; ?>" class="form-control">
+                              </div>
 
-            <label>Nivel de azucar :</label>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">#</span>
-              <select name="cboNivelAzucar" class="form-select">
-                <option value="B" <?php if ($datosPro['pro_nivel_azucar'] == "B") {
-                                    echo "selected";
-                                  } ?>>Bajo</option>
-                <option value="M" <?php if ($datosPro['pro_nivel_azucar'] == "M") {
-                                    echo "selected";
-                                  } ?>>Medio</option>
-                <option value="A" <?php if ($datosPro['pro_nivel_azucar'] == "A") {
-                                    echo "selected";
-                                  } ?>>Alto</option>
-                <option value="N" <?php if ($datosPro['pro_nivel_azucar'] == "N") {
-                                    echo "selected";
-                                  } ?>>Ninguno</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="card card-primary">
-          <div class="card-body">
-            <h5>ESTOY EN LADO DERECHO</h5>
-            <div class="form-check">
-              <input name="chkPagaIva" <?php if ($datosPro['pro_aplica_iva'] == 1) echo "checked"; ?> class="form-check-input" type="checkbox">
-              <label class="form-check-label"><strong>Paga Iva</strong></label>
-            </div>
+                              <label>Nivel de azucar :</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">#</span>
+                                <select name="cboNivelAzucar" class="form-select">
+                                  <option value="B" <?php if ($datosPro['pro_nivel_azucar'] == "B") {
+                                                      echo "selected";
+                                                    } ?>>Bajo</option>
+                                  <option value="M" <?php if ($datosPro['pro_nivel_azucar'] == "M") {
+                                                      echo "selected";
+                                                    } ?>>Medio</option>
+                                  <option value="A" <?php if ($datosPro['pro_nivel_azucar'] == "A") {
+                                                      echo "selected";
+                                                    } ?>>Alto</option>
+                                  <option value="N" <?php if ($datosPro['pro_nivel_azucar'] == "N") {
+                                                      echo "selected";
+                                                    } ?>>Ninguno</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-6">
+                          <div class="card card-primary">
+                            <div class="card-body">
+                              <h5>ESTOY EN LADO DERECHO</h5>
+                              <div class="form-check">
+                                <input name="chkPagaIva" <?php if ($datosPro['pro_aplica_iva'] == 1) echo "checked"; ?> class="form-check-input" type="checkbox">
+                                <label class="form-check-label"><strong>Paga Iva</strong></label>
+                              </div>
 
-            <label>Especificaciones :</label>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">#</span>
-              <textarea name="txtEspecifica" class="form-control"><?php echo $datosPro['pro_especifica']; ?></textarea>
+                              <label>Especificaciones :</label>
+                              <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">#</span>
+                                <textarea name="txtEspecifica" class="form-control"><?php echo $datosPro['pro_especifica']; ?></textarea>
+                              </div>
+                              <!-- imagen -->
+                              <div class="input-group">
+                                <p>
+                                  <img src="imagenes/<?php echo $datosPro['pro_imagen']; ?>" id="imguserId" class="img-circle" height="150" width="150" />
+                                  <input class="input-group" type="file" name="imguser" id="fotoId" onchange="previewFoto()" accept="image/*">
+                                  <label for="ejemplo_archivo_1">Imagen (Tam. máximo archivo
+                                    1 MB)</label>
+                                </p>
+                              </div>
+                              <!-- fin imagen -->
+                              <?php
+                              $marcas = MarcaData::getAllMarcas();
+                              ?>
+                              <label>Marca :</label>
+                              <select class="form-select" name="cboMarcas" required>
+                                <option value="<?php echo $datosPro['marca_id']; ?>"><?php echo MarcaData::getNombeMarcaById($datosPro['marca_id']); ?></option>
+                                <?php
+                                if ($marcas != null) {
+                                  foreach ($marcas as $indice => $rowm) {
+                                    if ($datosPro['marca_id'] != $rowm['marca_id']) {
+                                ?>
+                                      <option value="<?php echo $rowm['marca_id']; ?>"><?php echo $rowm['marca_descripcion']; ?></option>
+                                <?php
+                                    }
+                                  }
+                                }
+                                ?>
+                              </select>
+                              <!--  -->
+                              <?php
+                              $categorias = CategoriaData::getAllCategorias();
+                              ?>
+                              <label>Categoría :</label>
+                              <select class="form-select" name="cboCategorias" required>
+                                <option value="<?php echo $datosPro['catego_id']; ?>"><?php echo CategoriaData::getNombreCategoriaById($datosPro['catego_id']); ?></option>
+                                <?php
+                                if ($categorias != null) {
+                                  foreach ($categorias as $indice => $rowc) {
+                                ?>
+                                    <option value="<?php echo $rowc['catego_id']; ?>"><?php echo $rowc['catego_descripcion']; ?></option>
+                                <?php
+                                  }
+                                }
+                                ?>
+                              </select>
+                              <!--  -->
+                              <button type="submit" name="btnUpdate" class="btn btn-primary btn-sm mt-2">Grabar cambios</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+
+                </div>
+              </div>
             </div>
-            <!-- imagen -->
-            <div class="input-group">
-              <p>
-                <img src="../imagenes/<?php echo $datosPro['pro_imagen']; ?>" id="imguserId" class="img-circle" height="150" width="150" />
-                <input class="input-group" type="file" name="imguser" id="fotoId" onchange="previewFoto()" accept="image/*">
-                <label for="ejemplo_archivo_1">Imagen (Tam. máximo archivo
-                  1 MB)</label>
-              </p>
-            </div>
-            <!-- fin imagen -->
-            <?php
-            $marcas = MarcaData::getAllMarcas();
-            ?>
-            <label>Marca :</label>
-            <select class="form-select" name="cboMarcas" required>
-              <option value="<?php echo $datosPro['marca_id']; ?>"><?php echo MarcaData::getNombeMarcaById($datosPro['marca_id']); ?></option>
-              <?php
-              if ($marcas != null) {
-                foreach ($marcas as $indice => $rowm) {
-                  if ($datosPro['marca_id'] != $rowm['marca_id']) {
-              ?>
-                    <option value="<?php echo $rowm['marca_id']; ?>"><?php echo $rowm['marca_descripcion']; ?></option>
-              <?php
-                  }
-                }
-              }
-              ?>
-            </select>
-            <!--  -->
-            <?php
-            $categorias = CategoriaData::getAllCategorias();
-            ?>
-            <label>Categoría :</label>
-            <select class="form-select" name="cboCategorias" required>
-              <option value="<?php echo $datosPro['catego_id']; ?>"><?php echo CategoriaData::getNombreCategoriaById($datosPro['catego_id']); ?></option>
-              <?php
-              if ($categorias != null) {
-                foreach ($categorias as $indice => $rowc) {
-              ?>
-                  <option value="<?php echo $rowc['catego_id']; ?>"><?php echo $rowc['catego_descripcion']; ?></option>
-              <?php
-                }
-              }
-              ?>
-            </select>
-            <!--  -->
-            <button type="submit" name="btnUpdate" class="btn btn-primary btn-sm mt-2">Grabar cambios</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-      </div>
-      
-    </div>
-  </div>
-</div>
             <!-- Fin Modal Editar -->
-            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#ModalEliminar<?php echo $row['pro_id']; ?>">
-  Eliminar
-</button>
-          <!-- Modal eliminar -->
-<div class="modal fade" id="ModalEliminar<?php echo $row['pro_id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog ">
-    <div class="modal-content">
-    <div class="modal-header">
-              <h4 class="modal-title">Eliminar de datos</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-             
+
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#ModalEliminar<?php echo $row['pro_id']; ?>">
+              Eliminar
+            </button>
+
+            <!-- Modal  Eliminar-->
+            <div class="modal fade" id="ModalEliminar<?php echo $row['pro_id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Elimnar producto</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="post">
+                      <h4>Esta seguro?</h4>
+                      <input type="hidden" name="txtProId" value="<?php echo $row['pro_id']; ?>">
+                      <button type="submit" name="btnDelete" class="btn btn-Danger btn-sm mt-2">Eliminar</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
-      <div class="modal-body">
-      <form method="post"> 
-        <h1>estas seguro</h1>
-        
-        <input type="hidden" name="txtProId" value="<?php echo $row['pro_id']; ?>">
-        <button type="submit"  name="btnDelete"  class="btn btn-danger btn-sm mt-2">eliminar</button>
-        </form>
+
           </td>
         </tr>
     <?php
@@ -394,16 +396,16 @@ if (isset($_POST['btnDelete'])) {
 </table>
 <!-- NUEVO MODAL DE ADMINLTE -->
 <div class="modal fade" id="ModalNuevo">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Default Modal</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-            <form method="post" enctype="multipart/form-data">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Default Modal</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" enctype="multipart/form-data">
           <div class="row">
             <div class="col-6">
               <div class="card card-primary">
@@ -521,16 +523,16 @@ if (isset($_POST['btnDelete'])) {
             </div>
           </div>
         </form>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
       </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 
 
 <!-- Fin Modal Nuevo -->
@@ -546,6 +548,3 @@ if (isset($_POST['btnDelete'])) {
     }
   }
 </script>
-
-
-

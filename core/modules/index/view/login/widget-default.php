@@ -1,14 +1,28 @@
+
+<div class="row">
 <div class="login-box">
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../../index2.html" class="h1"><b>Acceder al Sistema</b></a>
+      <h5>Acceso al sistema</h5>
     </div>
     <div class="card-body">
+    <?php
+                            if (isset($_SESSION['user_error']) && $_SESSION['user_error'] != null) {
+                                ?>
+                                <div class="alert alert-danger">
+                                    <i class="fa fa-warning"></i>
+                                    &nbsp; <?php echo $_SESSION['user_error']; ?> !
+                                </div>
+                                <?php
+                                $_SESSION['user_error'] = null;
+                            }
+
+                            ?>
 
       <form action="./?action=processlogin" method="post">
         <div class="input-group mb-3">
-            <label for="">Usuario:</label>
+            <label>Usuario:</label>
           <input type="text" class="form-control" name="txtUsuario" placeholder="usuario">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -17,7 +31,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-            <label for=""> Contraseña:</label>
+            <label>Contraseña:</label>
           <input type="password" class="form-control" name="txtContra" placeholder="Password">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -26,17 +40,15 @@
           </div>
         </div>
         <div class="row">
-          
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" name="btnIngresar" class="btn btn-primary btn-block">Ingresar</button>
+            <button type="submit" name="btnIngresar" class="btn btn-success btn-block">Ingresar</button>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
-     
-      <!-- /.social-auth-links -->
+
 
       <p class="mb-1">
         <a href="forgot-password.html">Olvide mi contraseña</a>
@@ -48,3 +60,4 @@
   <!-- /.card -->
 </div>
 <!-- /.login-box -->
+</div>

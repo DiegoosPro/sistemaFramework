@@ -4,7 +4,6 @@ class Database
 {
     public static $db;
     public static $con;
-
     public static $DB_host = "localhost";
     public static $DB_name = "dbsuper";
 
