@@ -1,6 +1,6 @@
 /*
 SQLyog Ultimate v11.11 (64 bit)
-MySQL - 5.5.5-10.4.28-MariaDB : Database - dbsuper
+MySQL - 5.5.5-10.4.24-MariaDB : Database - dbsuper
 *********************************************************************
 */
 
@@ -16,13 +16,60 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`dbsuper` /*!40100 DEFAULT CHARACTER SET
 
 USE `dbsuper`;
 
+/*Table structure for table `clientes` */
+
+DROP TABLE IF EXISTS `clientes`;
+
+CREATE TABLE `clientes` (
+  `cli_id` varchar(13) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `cli_nombre` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `cli_direcc` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `cli_telefono` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`cli_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+/*Data for the table `clientes` */
+
+insert  into `clientes`(`cli_id`,`cli_nombre`,`cli_direcc`,`cli_telefono`) values ('100200300','PEPITO PEREZ','Ibarra','0981831600'),('1002003007001','RANCHO TOTORAL','Yahuarcocha','098185555'),('1050116655','DIEGO CACUANGO','CARANQUI','097317005');
+
+/*Table structure for table `facturav` */
+
+DROP TABLE IF EXISTS `facturav`;
+
+CREATE TABLE `facturav` (
+  `fac_nro` varchar(20) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `fac_fecha` date DEFAULT NULL,
+  `fac_por_iva` decimal(5,2) DEFAULT NULL,
+  `cli_id` varchar(13) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`fac_nro`),
+  KEY `cli_id` (`cli_id`),
+  CONSTRAINT `facturav_ibfk_1` FOREIGN KEY (`cli_id`) REFERENCES `clientes` (`cli_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+/*Data for the table `facturav` */
+
+/*Table structure for table `facturav_detalle` */
+
+DROP TABLE IF EXISTS `facturav_detalle`;
+
+CREATE TABLE `facturav_detalle` (
+  `fac_nro` varchar(20) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `df_cantidad` int(11) DEFAULT NULL,
+  `df_preciov` decimal(10,2) DEFAULT NULL,
+  `pro_id` int(11) DEFAULT NULL,
+  KEY `fac_nro` (`fac_nro`),
+  CONSTRAINT `facturav_detalle_ibfk_1` FOREIGN KEY (`fac_nro`) REFERENCES `facturav` (`fac_nro`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
+
+/*Data for the table `facturav_detalle` */
+
 /*Table structure for table `perfiles` */
 
 DROP TABLE IF EXISTS `perfiles`;
 
 CREATE TABLE `perfiles` (
   `per_id` int(11) NOT NULL AUTO_INCREMENT,
-  `per_nombre` varchar(30) DEFAULT NULL,
+  `per_nombre` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`per_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -36,7 +83,7 @@ DROP TABLE IF EXISTS `tab_categorias`;
 
 CREATE TABLE `tab_categorias` (
   `catego_id` int(11) NOT NULL,
-  `catego_descripcion` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `catego_descripcion` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`catego_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -50,7 +97,7 @@ DROP TABLE IF EXISTS `tab_marcas`;
 
 CREATE TABLE `tab_marcas` (
   `marca_id` int(11) NOT NULL,
-  `marca_descripcion` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `marca_descripcion` varchar(20) CHARACTER SET utf8mb4 DEFAULT NULL,
   PRIMARY KEY (`marca_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci;
 
@@ -64,15 +111,15 @@ DROP TABLE IF EXISTS `tab_productos`;
 
 CREATE TABLE `tab_productos` (
   `pro_id` int(11) NOT NULL,
-  `pro_descripcion` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `pro_descripcion` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
   `pro_precio_c` decimal(10,2) DEFAULT NULL,
   `pro_precio_v` decimal(10,2) DEFAULT NULL,
   `pro_stock` int(11) DEFAULT 0,
   `pro_fecha_elab` date DEFAULT NULL,
-  `pro_nivel_azucar` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `pro_nivel_azucar` char(1) CHARACTER SET utf8mb4 DEFAULT NULL,
   `pro_aplica_iva` tinyint(1) DEFAULT NULL,
-  `pro_especifica` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `pro_imagen` varchar(30) DEFAULT NULL,
+  `pro_especifica` text CHARACTER SET utf8mb4 DEFAULT NULL,
+  `pro_imagen` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
   `marca_id` int(11) DEFAULT NULL,
   `catego_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`pro_id`),
@@ -92,9 +139,9 @@ DROP TABLE IF EXISTS `usuarios`;
 
 CREATE TABLE `usuarios` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_usuario` varchar(10) DEFAULT NULL,
-  `user_contra` varchar(15) DEFAULT NULL,
-  `user_nombre` varchar(30) DEFAULT NULL,
+  `user_usuario` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `user_contra` varchar(15) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `user_nombre` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
   `user_activo` tinyint(1) DEFAULT 1,
   `user_create_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `per_id` int(11) DEFAULT NULL,

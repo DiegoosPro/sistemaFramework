@@ -17,7 +17,7 @@ class UserData
 
             if ($stmt->rowCount() > 0) {
                 $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
-                if ($contra == $userRow['user_contra']) {
+                if (($contra) == $userRow['user_contra']) {
                     if ($userRow['user_activo'] == 1) {
                         if (!isset($_SESSION)) {
                             session_destroy();

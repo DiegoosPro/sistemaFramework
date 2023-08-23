@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_spanish_ci">dbsuper</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="clientes" view="colnames">
+<left>14</left>
+<top>159</top>
+<width>111</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `clientes` (
+  `cli_id` varchar(13) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `cli_nombre` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `cli_direcc` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `cli_telefono` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`cli_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci</sql_create_table>
+</table>
+<table name="facturav" view="colnames">
+<left>207</left>
+<top>165</top>
+<width>113</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `facturav` (
+  `fac_nro` varchar(20) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `fac_fecha` date DEFAULT NULL,
+  `fac_por_iva` decimal(5,2) DEFAULT NULL,
+  `cli_id` varchar(13) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`fac_nro`),
+  KEY `cli_id` (`cli_id`),
+  CONSTRAINT `facturav_ibfk_1` FOREIGN KEY (`cli_id`) REFERENCES `clientes` (`cli_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci</sql_create_table>
+</table>
+<table name="facturav_detalle" view="colnames">
+<left>394</left>
+<top>315</top>
+<width>112</width>
+<height>146</height>
+<sql_create_table>CREATE TABLE `facturav_detalle` (
+  `fac_nro` varchar(20) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `df_cantidad` int(11) DEFAULT NULL,
+  `df_preciov` decimal(10,2) DEFAULT NULL,
+  `pro_id` int(11) DEFAULT NULL,
+  KEY `fac_nro` (`fac_nro`),
+  CONSTRAINT `facturav_detalle_ibfk_1` FOREIGN KEY (`fac_nro`) REFERENCES `facturav` (`fac_nro`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci</sql_create_table>
+</table>
+<table name="perfiles" view="colnames">
+<left>351</left>
+<top>0</top>
+<width>116</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `perfiles` (
+  `per_id` int(11) NOT NULL AUTO_INCREMENT,
+  `per_nombre` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  PRIMARY KEY (`per_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci</sql_create_table>
+</table>
+<table name="tab_categorias" view="colnames">
+<left>472</left>
+<top>0</top>
+<width>155</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `tab_categorias` (
+  `catego_id` int(11) NOT NULL,
+  `catego_descripcion` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
+  PRIMARY KEY (`catego_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci</sql_create_table>
+</table>
+<table name="tab_marcas" view="colnames">
+<left>632</left>
+<top>0</top>
+<width>153</width>
+<height>112</height>
+<sql_create_table>CREATE TABLE `tab_marcas` (
+  `marca_id` int(11) NOT NULL,
+  `marca_descripcion` varchar(20) CHARACTER SET utf8mb4 DEFAULT NULL,
+  PRIMARY KEY (`marca_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci</sql_create_table>
+</table>
+<table name="tab_productos" view="colnames">
+<left>790</left>
+<top>0</top>
+<width>144</width>
+<height>282</height>
+<sql_create_table>CREATE TABLE `tab_productos` (
+  `pro_id` int(11) NOT NULL,
+  `pro_descripcion` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `pro_precio_c` decimal(10,2) DEFAULT NULL,
+  `pro_precio_v` decimal(10,2) DEFAULT NULL,
+  `pro_stock` int(11) DEFAULT 0,
+  `pro_fecha_elab` date DEFAULT NULL,
+  `pro_nivel_azucar` char(1) CHARACTER SET utf8mb4 DEFAULT NULL,
+  `pro_aplica_iva` tinyint(1) DEFAULT NULL,
+  `pro_especifica` text CHARACTER SET utf8mb4 DEFAULT NULL,
+  `pro_imagen` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `marca_id` int(11) DEFAULT NULL,
+  `catego_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`pro_id`),
+  KEY `marca_id` (`marca_id`),
+  KEY `catego_id` (`catego_id`),
+  CONSTRAINT `tab_productos_ibfk_1` FOREIGN KEY (`marca_id`) REFERENCES `tab_marcas` (`marca_id`),
+  CONSTRAINT `tab_productos_ibfk_2` FOREIGN KEY (`catego_id`) REFERENCES `tab_categorias` (`catego_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci</sql_create_table>
+</table>
+<table name="usuarios" view="colnames">
+<left>602</left>
+<top>166</top>
+<width>132</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `usuarios` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_usuario` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `user_contra` varchar(15) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `user_nombre` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `user_activo` tinyint(1) DEFAULT 1,
+  `user_create_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `per_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  KEY `per_id` (`per_id`),
+  CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`per_id`) REFERENCES `perfiles` (`per_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish_ci</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
