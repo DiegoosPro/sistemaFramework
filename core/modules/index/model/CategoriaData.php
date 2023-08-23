@@ -19,6 +19,29 @@ class CategoriaData{
       return null;
     }
   }
+
+
+  public static function getAllProductosByCategoria($idcatego)
+    {
+      try {
+        $sql = "SELECT * FROM tab_productos
+        WHERE catego_id=:pcatego_id";
+        
+        $conexion = Database::getCon();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindparam(":pcatego_id", $idcatego);
+
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+          $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          return $lista;
+        } else
+          return null;
+      } catch (PDOException $e) {
+        echo $e->getMessage();
+        return null;
+      }
+    }
   
   public static function getNombreCategoriaById($catego_id)
   {
@@ -40,6 +63,7 @@ class CategoriaData{
       return null;
     }
   }
+
   
 
 
