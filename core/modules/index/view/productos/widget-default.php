@@ -147,7 +147,7 @@ if (isset($_POST['btnDelete'])) {
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalNuevo">
   Nuevo producto
 </button>
-
+ <a href="reportes/holamundoxls.php">Imprimir hola munado</a>
 
 <table class="table table-striped">
   <thead>
