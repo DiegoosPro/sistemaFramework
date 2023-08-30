@@ -102,6 +102,9 @@ $pdf->SetLineWidth(0.1);
 $bandera = false; //Para alternar el relleno
 $pdf->SetFont('Times', '', 10);
 $nombrearchivo = "mireporte.pdf";
+if(isset($_GET['mimarca'])){
+    $marca_id=$_GET
+}
 
 
 
