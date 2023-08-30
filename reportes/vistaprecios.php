@@ -24,33 +24,43 @@ $titulosColumnas = array('Nro.', 'CODIGO', 'PRODUCTO', 'PRECIO');
 
 $spreadsheet->setActiveSheetIndex(0)->mergeCells('C1:D1');
 
+// Se agregan los títulos del reporte
+$spreadsheet->setActiveSheetIndex(0)
+    ->setCellValue('A4', $titulosColumnas[0])
+    ->setCellValue('B4', $titulosColumnas[1])
+    ->setCellValue('C4', $titulosColumnas[2])
+    ->setCellValue('D4', $titulosColumnas[3]);
 
-        // Se agregan los titulos del reporte
-        $spreadsheet->setActiveSheetIndex(0)
-             ->setCellValue('A4', $titulosColumnas[0])
-             ->setCellValue('B4', $titulosColumnas[1])
-             ->setCellValue('C4', $titulosColumnas[2])
-             ->setCellValue('D4', $titulosColumnas[3]);
-
-$productos= ProductoData::getAllProductos();
-if ($productos != null ){
-    $i=5;
-    $conta=0;
-    foreach($productos as $index => $rowP){
+$productos = ProductoData::getAllProductos();
+if ($productos != null) {
+    $i = 5;
+    $conta = 0;
+    foreach ($productos as $index => $rowP) {
         $conta++;
         $spreadsheet->setActiveSheetIndex(0)
-             ->setCellValue('A'. $i,$conta)
-             ->setCellValue('B'.$i,$rowP['pro_id'])
-             ->setCellValue('C'.$i,$rowP['pro_descripcion'])
-             ->setCellValue('D'.$i,$rowP['pro_precio_v']);
-             $i++;
+             ->setCellValue('A' . $i, $conta)
+             ->setCellValue('B' . $i, $rowP['pro_id'])
+             ->setCellValue('C' . $i, $rowP['pro_descripcion'])
+             ->setCellValue('D' . $i, $rowP['pro_precio_v']);
+
+        // Aplicar bordes a las celdas
+        $spreadsheet->getActiveSheet()->getStyle('A' . $i . ':D' . $i)->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
+                ],
+            ],
+        ]);
+
+        $i++;
     }
 }
+
 $spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(5);
 $spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(10);
 $spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(50);
 $spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(15);
-
 
 $spreadsheet1 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 $spreadsheet1->setName('Water_Level');
@@ -60,14 +70,16 @@ $spreadsheet1->setHeight(74);
 $spreadsheet1->setCoordinates('G3');
 $spreadsheet1->setWorksheet($spreadsheet->getActiveSheet());
 
-$minombre="holamundo";
-$archivo='Vista_Precio_'.$minombre.'.xlsx';
+$minombre = "holamundo";
+$archivo = 'Vista_Precio_' . $minombre . '.xlsx';
+
 // Se manda el archivo al navegador web, con el nombre que se indica (Excel2007)
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="' . $archivo . '"');
 header('Cache-Control: max-age=0');
+
 // IO FACTORY
 $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
 $writer->save('php://output');
 
-//FIN CREACION Y DESCARGA DE ARCHIVO EXCEL
+// FIN CREACION Y DESCARGA DE ARCHIVO EXCEL
