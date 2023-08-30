@@ -23,31 +23,6 @@ class ProductoData
         return null;
       }
     }
-
-    public static function getAllProductosByCategoria($idcatego)
-    {
-      try {
-        $sql = "SELECT * FROM tab_productos
-        WHERE catego_id=:pcatego_id;
-        ORDER BY pro_descripcion";
-        $conexion = Database::getCon();
-        $stmt = $conexion->prepare($sql);
-        $stmt->bindparam(":pcatego_id", $idcatego);
-
-        $stmt->execute();
-        if ($stmt->rowCount() > 0) {
-          $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
-          return $lista;
-        } else
-          return null;
-      } catch (PDOException $e) {
-        echo $e->getMessage();
-        return null;
-      }
-    }
-
-
-
     
     public static function getProductoById($idbusca)
     {
@@ -64,6 +39,26 @@ class ProductoData
         } else {
           return null;
         }
+      } catch (PDOException $e) {
+        echo $e->getMessage();
+        return null;
+      }
+    }
+    
+    public static function getAllProductosByCategoria($idcatego)
+    {
+      try {
+        $sql = "SELECT * FROM tab_productos WHERE catego_id = :pcatego_id
+                    ORDER BY pro_descripcion";
+        $conexion = Database::getCon();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindparam(":pcatego_id", $idcatego);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+          $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          return $lista;
+        } else
+          return null;
       } catch (PDOException $e) {
         echo $e->getMessage();
         return null;
@@ -165,6 +160,17 @@ class ProductoData
       }
     }
     
+// Obtener productos con stock bajo (menor a cierto valor)
+public static function getProductosWithLowStock($stockThreshold) {
+  $conexion = Database::getCon();
 
+  $query = "SELECT * FROM tab_productos WHERE pro_stock > 0 AND pro_stock < :stockThreshold";
+  $stmt = $conexion->prepare($query);
+  $stmt->bindParam(':stockThreshold', $stockThreshold, PDO::PARAM_INT);
+  $stmt->execute();
+
+  $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  return $productos;
+}
 
 }

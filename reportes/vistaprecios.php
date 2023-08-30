@@ -4,6 +4,11 @@
 require_once "../core/controller/Database.php";
 require_once "../core/modules/index/model/ProductoData.php";
 
+
+require_once '../core/modules/index/model/MarcaData.php';
+require_once '../core/modules/index/model/CategoriaData.php';
+
+
 require '../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -16,70 +21,95 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
 
         
+
 $spreadsheet = new Spreadsheet();
 $activeWorksheet = $spreadsheet->getActiveSheet();
-$activeWorksheet->setCellValue('C3', 'LISTA PRECIOS');
 
-$titulosColumnas = array('Nro.', 'CODIGO', 'PRODUCTO', 'PRECIO');
+// Establecer el título de la lista de productos en la celda B3
+$activeWorksheet->setCellValue('C3', 'LISTA PRECIOS');
+$titleFont = [
+    'bold' => true,
+    'size' => 16,
+    'name' => 'Georgia', // Cambia 'Arial' al tipo de letra elegante que desees
+    'color' => ['rgb' => '000000'], // Cambia '000000' al color deseado en formato RGB
+];
+$activeWorksheet->getStyle('C3')->applyFromArray(['font' => $titleFont]);
+
+// Títulos de columna
+$titulosColumnas = array('Nro.', 'CODIGO', 'PRODUCTO', 'STOCK', 'PRECIO');
 
 $spreadsheet->setActiveSheetIndex(0)->mergeCells('C1:D1');
 
-// Se agregan los títulos del reporte
-$spreadsheet->setActiveSheetIndex(0)
-    ->setCellValue('A4', $titulosColumnas[0])
-    ->setCellValue('B4', $titulosColumnas[1])
-    ->setCellValue('C4', $titulosColumnas[2])
-    ->setCellValue('D4', $titulosColumnas[3]);
+// Agregar los títulos de columna en la fila 4
+$styleTitulo = [
+    'font' => ['bold' => true],
+    'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
+    'borders' => ['outline' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => ['rgb' => '000000']]]
+];
 
-$productos = ProductoData::getAllProductos();
-if ($productos != null) {
-    $i = 5;
-    $conta = 0;
-    foreach ($productos as $index => $rowP) {
-        $conta++;
-        $spreadsheet->setActiveSheetIndex(0)
-             ->setCellValue('A' . $i, $conta)
-             ->setCellValue('B' . $i, $rowP['pro_id'])
-             ->setCellValue('C' . $i, $rowP['pro_descripcion'])
-             ->setCellValue('D' . $i, $rowP['pro_precio_v']);
-
-        // Aplicar bordes a las celdas
-        $spreadsheet->getActiveSheet()->getStyle('A' . $i . ':D' . $i)->applyFromArray([
-            'borders' => [
-                'allBorders' => [
-                    'borderStyle' => Border::BORDER_THIN,
-                    'color' => ['rgb' => '000000'],
-                ],
-            ],
-        ]);
-
-        $i++;
-    }
+foreach ($titulosColumnas as $index => $titulo) {
+    $columnLetter = chr(65 + $index); // ASCII 'A' is 65
+    $activeWorksheet->setCellValue($columnLetter . '4', $titulo);
+    $activeWorksheet->getStyle($columnLetter . '4')->applyFromArray($styleTitulo);
+    $activeWorksheet->getColumnDimension($columnLetter)->setAutoSize(true); // Ajustar el ancho de la columna automáticamente
 }
 
-$spreadsheet->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-$spreadsheet->getActiveSheet()->getColumnDimension('B')->setWidth(10);
-$spreadsheet->getActiveSheet()->getColumnDimension('C')->setWidth(50);
-$spreadsheet->getActiveSheet()->getColumnDimension('D')->setWidth(15);
+// Obtener los datos de los productos
+$productos = ProductoData::getAllProductos();
+
+// Agregar los datos de los productos en las filas
+$row = 5; // Comenzar desde la fila 5
+foreach ($productos as $indice => $producto) {
+    $activeWorksheet->setCellValue('A' . $row, $indice + 1)
+                    ->setCellValue('B' . $row, $producto['pro_id'])
+                    ->setCellValue('C' . $row, $producto['pro_descripcion'])
+                    ->setCellValue('E' . $row, $producto['pro_precio_v']);
+
+    // Resaltar el recuadro en color rojo para productos con stock menor a 5
+    if ($producto['pro_stock'] < 5) {
+        $styleArray = [
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['rgb' => 'FF0000'], // Color rojo
+            ],
+        ];
+        $activeWorksheet->getStyle('D' . $row)->applyFromArray($styleArray);
+    }
+
+    $activeWorksheet->setCellValue('D' . $row, $producto['pro_stock']); // Colocar el valor de stock en cualquier caso
+    $row++;
+}
+
+// Establecer dimensiones de las columnas
+$activeWorksheet->getColumnDimension('A')->setWidth(5);
+$activeWorksheet->getColumnDimension('B')->setWidth(10);
+$activeWorksheet->getColumnDimension('C')->setWidth(50);
+$activeWorksheet->getColumnDimension('D')->setWidth(15);
+$activeWorksheet->getColumnDimension('E')->setWidth(15);
+
+
+
+// Aplicar bordes a todas las celdas de la tabla
+$lastColumn = $activeWorksheet->getHighestColumn();
+$tableRange = 'A4:' . $lastColumn . $row;
+$activeWorksheet->getStyle($tableRange)->applyFromArray(['borders' => ['allBorders' => ['borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN, 'color' => ['rgb' => '000000']]]]);
+
 
 $spreadsheet1 = new \PhpOffice\PhpSpreadsheet\Worksheet\Drawing();
 $spreadsheet1->setName('Water_Level');
 $spreadsheet1->setDescription('Water_Level');
-$spreadsheet1->setPath('../img/escudo.png');
+$spreadsheet1->setPath('../img/LOGO.png');
 $spreadsheet1->setHeight(74);
 $spreadsheet1->setCoordinates('G3');
 $spreadsheet1->setWorksheet($spreadsheet->getActiveSheet());
 
-$minombre = "holamundo";
-$archivo = 'Vista_Precio_' . $minombre . '.xlsx';
-
-// Se manda el archivo al navegador web, con el nombre que se indica (Excel2007)
+// Nombre del archivo y configuración para descarga
+$minombre = "Productos";
+$archivo = 'Reporte_' . $minombre . '.xlsx';
 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 header('Content-Disposition: attachment;filename="' . $archivo . '"');
 header('Cache-Control: max-age=0');
 
-// IO FACTORY
+// Guardar el archivo en la salida
 $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
 $writer->save('php://output');
-
-// FIN CREACION Y DESCARGA DE ARCHIVO EXCEL
