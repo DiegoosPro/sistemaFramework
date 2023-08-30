@@ -151,6 +151,8 @@ if (isset($_POST['btnDelete'])) {
 
  <a href="reportes/vistaprecios.php" class="btn btn-success btn-sm"><i class="fas fa-print mr-2" ></i>Lista de precios</a>
 
+ <a href="reportes/listastockpdf.php" class="btn btn-success btn-sm"><i class="fas fa-print mr-2" ></i>Lista PDFs</a>
+
 
 <table class="table table-striped">
   <thead>
