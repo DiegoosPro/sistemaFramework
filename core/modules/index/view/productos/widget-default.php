@@ -151,7 +151,11 @@ if (isset($_POST['btnDelete'])) {
 
  <a href="reportes/vistaprecios.php" class="btn btn-success btn-sm"><i class="fas fa-print mr-2" ></i>Lista de precios</a>
 
- <a href="reportes/listastockpdf.php" class="btn btn-success btn-sm"><i class="fas fa-print mr-2" ></i>Lista PDFs</a>
+ <?php
+$marca_id=3;  //Leer de alguna manera
+
+?>
+<a href="reportes/listastockpdf.php?mimarca=<?php echo $marca_id;  ?>" class="btn btn-success btn-sm"><i class="fas fa-print mr-2" ></i>Lista stock PDF</a>
 
 
 <table class="table table-striped">

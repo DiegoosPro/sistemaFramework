@@ -1,8 +1,10 @@
-<?php
 
-date_default_timezone_set("America/Bogota");
+
+<?php
 require_once('../lib/FPDF/fpdf.php');
 
+require_once "../core/controller/Database.php";
+require_once "../core/modules/index/model/ProductoData.php";
 
 class PDF extends FPDF
 {
@@ -12,8 +14,8 @@ class PDF extends FPDF
     function Header()
     {
         // Logo
-        $this->Image('../img/logo.png', 20, 8, 20);
-        $this->Image('../img/logo.png', 170, 8, 25);
+        $this->Image('../img/LOGO.png', 20, 8, 20);
+        $this->Image('../img/LOGO.png', 170, 8, 25);
         // Arial bold 15
         $this->SetFont('Times', 'B', 14);
         // Movernos a la derecha
@@ -92,7 +94,7 @@ class PDF extends FPDF
 }
 
 
-$pdf = new PDF('P', 'mm', 'A4');
+$pdf = new PDF('P', 'mm', 'A4');  // Hoja A4 P=Vertical y la L=Horizontal
 $pdf->AddPage();
 $pdf->AliasNbPages();
 $pdf->SetMargins(20, 10, 30);
@@ -102,11 +104,36 @@ $pdf->SetLineWidth(0.1);
 $bandera = false; //Para alternar el relleno
 $pdf->SetFont('Times', '', 10);
 $nombrearchivo = "mireporte.pdf";
+
+    $pdf->Ln(5);
+    $pdf->SetFont('Times', 'B', 10);
+    $pdf->SetFillColor(220, 230, 250);
+    $pdf->SetX(20);
+    $pdf->Cell(175, 6, 'CERTIFICADO DE PROMOCION', 0, 0, 'C', true);
+    $pdf->Ln(10);
+    $pdf->SetFont('Times', '', 12);
+    $pdf->SetX(20);
+    $pdf->Cell(180, 6, iconv('UTF-8', 'windows-1252','Id Marca :'), 0, 0, 'C', false);
+    $pdf->Ln(10);
+
 if(isset($_GET['mimarca'])){
-    $marca_id=$_GET
+    $marca_id=$_GET['mimarca'];
+    $productos=ProductoData::getAllProductosByMarca($marca_id);
+    $conta=0;
+    $bandera=false;
+    foreach ($productos as $index => $rowP){
+        $conta++;
+        $pdf->SetX(20);
+        $pdf->Cell(5, 10, $conta,0,0,'C',$bandera);
+        $pdf->SetX(25);
+        $pdf->Cell(30, 10, $rowP['pro_descripcion'],0,0,'L',$bandera);
+        $pdf->Ln(8);
+        //$pdf->Cell(10, 5, number_format()$pro_qlq2,2)1,0);
+    }
 }
 
 
 
 $pdf->Output($nombrearchivo, "I");
+
 ?>

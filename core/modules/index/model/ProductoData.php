@@ -44,7 +44,7 @@ class ProductoData
         return null;
       }
     }
-    
+
     public static function getAllProductosByCategoria($idcatego)
     {
       try {
@@ -53,6 +53,27 @@ class ProductoData
         $conexion = Database::getCon();
         $stmt = $conexion->prepare($sql);
         $stmt->bindparam(":pcatego_id", $idcatego);
+        $stmt->execute();
+        if ($stmt->rowCount() > 0) {
+          $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          return $lista;
+        } else
+          return null;
+      } catch (PDOException $e) {
+        echo $e->getMessage();
+        return null;
+      }
+    }
+
+
+    public static function getAllProductosByMarca($marca_id)
+    {
+      try {
+        $sql = "SELECT * FROM tab_productos WHERE marca_id = :pmarca_id
+                    ORDER BY pro_descripcion";
+        $conexion = Database::getCon();
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindparam(":pmarca_id", $marca_id);
         $stmt->execute();
         if ($stmt->rowCount() > 0) {
           $lista = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -159,6 +180,11 @@ class ProductoData
         echo $e->getMessage();
       }
     }
+    
+
+
+
+
     
 // Obtener productos con stock bajo (menor a cierto valor)
 public static function getProductosWithLowStock($stockThreshold) {
